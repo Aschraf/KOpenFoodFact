@@ -1,58 +1,49 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+group = "com.github.aschraf.foodclient"
+
 plugins {
   kotlin("jvm") version "1.5.30"
+  kotlin("plugin.serialization") version "1.5.30"
   id("io.gitlab.arturbosch.detekt") version "1.18.0"
 }
 
+
+
 detekt {
-  failFast = false
   buildUponDefaultConfig = true
 
   config = files("$projectDir/detekt/detekt-config.yml") // point to your custom config defining rules to run, overwriting default behavior
   baseline = file("$projectDir/detekt/detekt-baseline.xml") // a way of suppressing issues before introducing detekt
 
-  input = files(
-    subprojects.flatMap { project ->
-      listOf(
-        "${project.projectDir}/src/main/kotlin"
-      )
-    }
-  )
 
   reports {
     html.enabled = true // observe findings in your browser with structure and code snippets
   }
 }
 
-allprojects {
-  group = "com.caloriesbites"
+repositories {
+  mavenCentral()
+}
 
-  repositories {
-    mavenCentral()
-  }
+dependencies {
+  implementation(Dep.ktorClient("core"))
+  implementation(Dep.ktorClient("cio"))
+  implementation(Dep.ktorClient("serialization"))
 }
 
 val javaVersionString = "11"
 
-subprojects {
-  apply(plugin = "org.jetbrains.kotlin.jvm")
+tasks {
 
-  dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+  withType<KotlinCompile>() {
+    kotlinOptions {
+      jvmTarget = javaVersionString
+    }
   }
 
-  tasks {
-
-    withType<KotlinCompile>() {
-      kotlinOptions {
-        jvmTarget = javaVersionString
-      }
-    }
-
-    withType<JavaCompile>().configureEach {
-      sourceCompatibility = javaVersionString
-      targetCompatibility = javaVersionString
-    }
+  withType<JavaCompile>().configureEach {
+    sourceCompatibility = javaVersionString
+    targetCompatibility = javaVersionString
   }
 }
