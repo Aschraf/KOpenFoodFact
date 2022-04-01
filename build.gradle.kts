@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.github.aschraf.foodclient"
 
 plugins {
-  kotlin("jvm") version "1.5.30"
+  kotlin("jvm") version "1.6.20"
   kotlin("plugin.serialization") version "1.5.30"
   id("io.gitlab.arturbosch.detekt") version "1.18.0"
 }
