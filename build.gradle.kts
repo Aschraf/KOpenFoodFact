@@ -4,7 +4,7 @@ group = "com.github.aschraf.foodclient"
 
 plugins {
   kotlin("jvm") version "1.5.30"
-  kotlin("plugin.serialization") version "1.5.30"
+  kotlin("plugin.serialization") version "1.6.20"
   id("io.gitlab.arturbosch.detekt") version "1.18.0"
 }
 
